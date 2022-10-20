@@ -15,11 +15,12 @@ typedef struct settlement_def {
 } settlement;
 
 void getString(char nameBuff[]);
+settlement *addSettlement(settlement *head, settlement *new);
 
 settlement *createSettlement(settlement *head, int *settlementCount) {
     
-    settlement *new = malloc(sizeof(settlement));
     char *nameBuff = malloc(sizeof(char) * 21);
+    settlement *new = malloc(sizeof(settlement));
 
     printf("Please enter a name for your settlement (20 or less LETTERS): ");
     getString(nameBuff);
@@ -27,12 +28,10 @@ settlement *createSettlement(settlement *head, int *settlementCount) {
     strncpy(new->name, nameBuff, MAX_NAME_SIZE);
     new->id = *settlementCount;
     new->income = 100;
-    
-    if (head == NULL) head = new;
-    else {
-        new->next = head;
-        head = new;
-    }
+    new->next = NULL;
+
+    head = addSettlement(head, new);
+    printSettlements(head);
 
     settlementCount++;
     return head;
@@ -56,3 +55,14 @@ void getString(char nameBuff[]) {
         }
     }
 }
+
+settlement *addSettlement(settlement *head, settlement *new) {
+
+    new->next = head;
+    head = new;
+
+    return head;
+}
+
+
+
