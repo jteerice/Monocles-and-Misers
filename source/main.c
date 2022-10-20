@@ -1,4 +1,5 @@
-#include <stdio.h>
+#include "settlement_funcs.h"
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -13,15 +14,15 @@ typedef struct settlement_def {
     int income;
     struct settlement_def *next;
 
-} settlement;
+} settlement;*/
 
 // Function prototypes
 int getChoice();
 void clear();
-settlement *createSettlement(settlement *head, int *settlementCount);
-void printSettlements(settlement *head);
-settlement *addToBack(settlement *head, settlement *new);
-settlement *initSettlement(int settlementCount);
+//settlement *createSettlement(settlement *head, int *settlementCount);
+//void printSettlements(settlement *head);
+//settlement *addToBack(settlement *head, settlement *new);
+//settlement *initSettlement(int settlementCount);
 
 int main () {
 
@@ -98,7 +99,7 @@ int getChoice() {
     return choice;
 }
 
-settlement *createSettlement(settlement *head, int *settlementCount) {
+/*settlement *createSettlement(settlement *head, int *settlementCount) {
 
     head = addToBack(head, initSettlement(*settlementCount));
     settlementCount++;
@@ -143,7 +144,7 @@ void printSettlements(settlement *head) {
         printf("%s\n", head->name);
         head = head->next;
     }
-}
+}*/
 
 void clear() {
     while (getchar() != '\n');
