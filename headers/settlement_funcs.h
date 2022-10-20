@@ -1,0 +1,1 @@
+int createSettlement(Settlement settlements[], int settlementCount);
