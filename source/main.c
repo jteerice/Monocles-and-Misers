@@ -20,6 +20,8 @@ int getChoice();
 void clear();
 settlement *createSettlement(settlement *head, int *settlementCount);
 void printSettlements(settlement *head);
+settlement *addToBack(settlement *head, settlement *new);
+settlement *initSettlement(int settlementCount);
 
 int main () {
 
@@ -42,45 +44,44 @@ int main () {
         if (choice == 1) break;
         else printf("Please enter 1 to continue.\n");
     }
-    printf("\n");
-
-    printf("+-----------What would you like to do?----------+\n");
-    printf("|                                               |\n");
-    printf("| 1) Retrive a list of settlements              |\n");
-    printf("| 2) Create a new settlement                    |\n");
-    printf("| 3) Build a road between two settlements       |\n");
-    printf("| 4) Develop settlement                         |\n");
-    printf("| 5) Retrieve current income from settlements   |\n");
-    printf("| 6) Quit                                       |\n");
-    printf("+-----------------------------------------------+\n");
 
     while (1) {
-        printf("\nPlease enter a choice between 1 and 6: ");
-        switch (getChoice()) {
-            case 1:
-                printSettlements(head);
-                break;
-            case 2:
-                head = createSettlement(head, &settlementCount);
-                break;
-            case 3:
-                //buildRoad();
-                break;
-            case 4:
-                //developSettlement();
-                break;
-            case 5:
-                //retrieveIncome();
-                break;
-            case 6:
-                printf("Thank you for playing..\n");
-                printf("Goodbye!\n");
-                exit(1);
-            default:
-                printf("Please select valid option: \n");
-                clear();
-                break;
-        }
+        printf("\n+-----------What would you like to do?----------+\n");
+        printf("|                                               |\n");
+        printf("| 1) Retrive a list of settlements              |\n");
+        printf("| 2) Create a new settlement                    |\n");
+        printf("| 3) Build a road between two settlements       |\n");
+        printf("| 4) Develop settlement                         |\n");
+        printf("| 5) Retrieve current income from settlements   |\n");
+        printf("| 6) Quit                                       |\n");
+        printf("+-----------------------------------------------+\n");
+
+            printf("\nPlease enter a choice between 1 and 6: ");
+            switch (getChoice()) {
+                case 1:
+                    printSettlements(head);
+                    break;
+                case 2:
+                    head = createSettlement(head, &settlementCount);
+                    break;
+                case 3:
+                    //buildRoad();
+                    break;
+                case 4:
+                    //developSettlement();
+                    break;
+                case 5:
+                    //retrieveIncome();
+                    break;
+                case 6:
+                    printf("Thank you for playing..\n");
+                    printf("Goodbye!\n");
+                    exit(1);
+                default:
+                    printf("Please select valid option: \n");
+                    clear();
+                    break;
+            }
     }
     
     return 0;
@@ -99,6 +100,28 @@ int getChoice() {
 
 settlement *createSettlement(settlement *head, int *settlementCount) {
 
+    head = addToBack(head, initSettlement(*settlementCount));
+    settlementCount++;
+    
+    return head;
+}
+
+settlement *addToBack(settlement *head, settlement *new) {
+
+    settlement *tmp = head;
+
+    if (tmp == NULL) head = new;
+    else {
+        while (tmp->next != NULL) {
+            tmp = tmp->next;
+        }
+        tmp->next = new;
+    }
+    return head;
+}
+
+settlement *initSettlement(int settlementCount) {
+
     char nameBuff[MAX_NAME_SIZE];
 
     printf("Please enter a name for your settlement (20 or less characters): ");
@@ -107,18 +130,15 @@ settlement *createSettlement(settlement *head, int *settlementCount) {
 
     settlement *new = (settlement*)malloc(sizeof(settlement));
     strncpy(new->name, nameBuff, MAX_NAME_SIZE);
-    new->id = *settlementCount;
+    new->id = settlementCount;
     new->income = 100;
     new->next = NULL;
 
-    new->next = head;
-    head = new;
-
-    settlementCount++;
-    return head;
+    return new;  
 }
 
 void printSettlements(settlement *head) {
+    printf("\n");
     while (head != NULL) {
         printf("%s\n", head->name);
         head = head->next;
@@ -128,3 +148,4 @@ void printSettlements(settlement *head) {
 void clear() {
     while (getchar() != '\n');
 }
+
