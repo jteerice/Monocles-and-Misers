@@ -11,13 +11,15 @@ typedef struct settlement_def {
     char name[MAX_NAME_SIZE]; // Limited to 20 characters
     int id;
     int income;
-    struct settlement *next;
+    struct settlement_def *next;
 
 } settlement;
 
 // Function prototypes
 int getChoice();
 void clear();
+settlement *createSettlement(settlement *head, int *settlementCount);
+void printSettlements(settlement *head);
 
 int main () {
 
@@ -93,6 +95,34 @@ int getChoice() {
     sscanf(buf, "%d", &choice);
     
     return choice;
+}
+
+settlement *createSettlement(settlement *head, int *settlementCount) {
+
+    char nameBuff[MAX_NAME_SIZE];
+
+    printf("Please enter a name for your settlement (20 or less characters): ");
+    fgets(nameBuff, MAX_NAME_SIZE, stdin);
+    nameBuff[strcspn(nameBuff, "\n")] = '\0';
+
+    settlement *new = (settlement*)malloc(sizeof(settlement));
+    strncpy(new->name, nameBuff, MAX_NAME_SIZE);
+    new->id = *settlementCount;
+    new->income = 100;
+    new->next = NULL;
+
+    new->next = head;
+    head = new;
+
+    settlementCount++;
+    return head;
+}
+
+void printSettlements(settlement *head) {
+    while (head != NULL) {
+        printf("%s\n", head->name);
+        head = head->next;
+    }
 }
 
 void clear() {
