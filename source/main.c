@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "settlement_funcs.h"
 
-#define MAX_NAME_SIZE 20
+#define MAX_NAME_SIZE 21
 
 // Settlement struct
 typedef struct settlement_def {
 
     char name[MAX_NAME_SIZE]; // Limited to 20 characters
+    int id;
     int income;
+    struct settlement *next;
 
-} Settlement;
+} settlement;
 
 // Function prototypes
 int getChoice();
@@ -21,7 +22,7 @@ void clear();
 int main () {
 
     int choice = 0;
-    Settlement settlement[10]; // This will by dynamically resized
+    settlement *head = NULL;
     int settlementCount = 0;
 
     printf("+-------------------------------Welcome to Monocles and Misers!---------------------------------+\n");
@@ -33,7 +34,7 @@ int main () {
     printf("|                                                                                               |\n");
     printf("+-----------------------------------------------------------------------------------------------+\n\n");
 
-    printf("Are you ready? ( Enter 1 for Yes )\n");
+    printf("Are you ready? ( Enter 1 for Yes ): ");
     while (choice != 1) {
         choice = getChoice();
         if (choice == 1) break;
@@ -52,12 +53,13 @@ int main () {
     printf("+-----------------------------------------------+\n");
 
     while (1) {
+        printf("\nPlease enter a choice between 1 and 6: ");
         switch (getChoice()) {
             case 1:
-                //settlementList();
+                printSettlements(head);
                 break;
             case 2:
-                createSettlement();
+                head = createSettlement(head, &settlementCount);
                 break;
             case 3:
                 //buildRoad();
