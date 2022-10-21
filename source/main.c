@@ -1,34 +1,28 @@
-#include "settlement_funcs.h"
-/*#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include "settlement_funcs.h"
+// HEADER
+#include <stdbool.h>
 #include <string.h>
-#include <math.h>
 
-#define MAX_NAME_SIZE 21
-
-// Settlement struct
-typedef struct settlement_def {
-
-    char name[MAX_NAME_SIZE]; // Limited to 20 characters
-    int id;
-    int income;
-    struct settlement_def *next;
-
-} settlement;*/
+#define MAX_SETTLEMENTS 20
 
 // Function prototypes
 int getChoice();
 void clear();
-//settlement *createSettlement(settlement *head, int *settlementCount);
-//void printSettlements(settlement *head);
-//settlement *addToBack(settlement *head, settlement *new);
-//settlement *initSettlement(int settlementCount);
+void initUnionFind(int UF[], int max);
+// HEADER
+void buildRoad(int UF[], settlement *head);
+bool getName(settlement *head, char *settlementName);
 
 int main () {
 
     int choice = 0;
     settlement *head = NULL;
-    int settlementCount = 0;
+    int settlementCount = 0; // This will be used to assign an ID to each node, and subsequently be used in the Union-Find datastructure for linking.
+    int *UF = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS);
+
+    initUnionFind(UF, MAX_SETTLEMENTS); // Initialize Union-Find data structure with the the the index as the dereferenced value
 
     printf("+-------------------------------Welcome to Monocles and Misers!---------------------------------+\n");
     printf("|                                                                                               |\n");
@@ -50,7 +44,7 @@ int main () {
         printf("\n+-----------What would you like to do?----------+\n");
         printf("|                                               |\n");
         printf("| 1) Retrive a list of settlements              |\n");
-        printf("| 2) Create a new settlement                    |\n");
+        printf("| 2) Create a new settlement (Max 20)           |\n");
         printf("| 3) Build a road between two settlements       |\n");
         printf("| 4) Develop settlement                         |\n");
         printf("| 5) Retrieve current income from settlements   |\n");
@@ -66,7 +60,7 @@ int main () {
                     head = createSettlement(head, &settlementCount);
                     break;
                 case 3:
-                    //buildRoad();
+                    buildRoad(UF, head);
                     break;
                 case 4:
                     //developSettlement();
@@ -99,54 +93,49 @@ int getChoice() {
     return choice;
 }
 
-/*settlement *createSettlement(settlement *head, int *settlementCount) {
+void initUnionFind(int UF[], int max) {
 
-    head = addToBack(head, initSettlement(*settlementCount));
-    settlementCount++;
-    
-    return head;
-}
-
-settlement *addToBack(settlement *head, settlement *new) {
-
-    settlement *tmp = head;
-
-    if (tmp == NULL) head = new;
-    else {
-        while (tmp->next != NULL) {
-            tmp = tmp->next;
-        }
-        tmp->next = new;
+    for (int i = 0; i < max; i++) {
+        UF[i] = i;
     }
-    return head;
 }
-
-settlement *initSettlement(int settlementCount) {
-
-    char nameBuff[MAX_NAME_SIZE];
-
-    printf("Please enter a name for your settlement (20 or less characters): ");
-    fgets(nameBuff, MAX_NAME_SIZE, stdin);
-    nameBuff[strcspn(nameBuff, "\n")] = '\0';
-
-    settlement *new = (settlement*)malloc(sizeof(settlement));
-    strncpy(new->name, nameBuff, MAX_NAME_SIZE);
-    new->id = settlementCount;
-    new->income = 100;
-    new->next = NULL;
-
-    return new;  
-}
-
-void printSettlements(settlement *head) {
-    printf("\n");
-    while (head != NULL) {
-        printf("%s\n", head->name);
-        head = head->next;
-    }
-}*/
 
 void clear() {
     while (getchar() != '\n');
+}
+
+void buildRoad(int UF[], settlement *head) {
+
+    char *settlement1 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
+    char *settlement2 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
+    bool set1 = true;
+    bool set2 = true;
+
+    printf("Please enter the first settlement you would like to connect: ");
+    set1 = getName(head, settlement1);
+    while (set1 == false) {
+        printf("That settlement doesn't exist! Please enter a valid settlement: ");
+        set1 = getName(head, settlement1);
+    }
+    printf("Please enter the second settlement you would like to connect: ");
+    set2 = getName(head, settlement2);
+    while (settlement2 == false) {
+        printf("That settlement doesn't exist! Please enter a valid settlement: ");
+        set1 = getName(head, settlement2);
+    }
+
+}
+
+bool getName(settlement *head, char *settlementName) {
+
+    fgets(settlementName, MAX_NAME_SIZE, stdin);
+    settlementName[strcspn(settlementName, "\n")] = '\0';
+
+    settlement *tmp = head;
+    while (tmp != NULL) {
+        if (strcmp(tmp->name, settlementName) == 0) return true;
+        tmp = tmp->next;
+    }
+    return false;
 }
 

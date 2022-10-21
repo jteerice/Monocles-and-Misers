@@ -1,13 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "settlement_funcs.h"
 
 settlement *createSettlement(settlement *head, int *settlementCount) {
 
+    if (*settlementCount == 20) {
+        printf("Settlement capacity reached!\n");
+        return head;
+    }
     head = addToBack(head, initSettlement(*settlementCount));
     settlementCount++;
     
     return head;
 }
 
+// Add to back so nodes will be ordered by index
 settlement *addToBack(settlement *head, settlement *new) {
 
     settlement *tmp = head;
@@ -33,7 +41,7 @@ settlement *initSettlement(int settlementCount) {
     settlement *new = (settlement*)malloc(sizeof(settlement));
     strncpy(new->name, nameBuff, MAX_NAME_SIZE);
     new->id = settlementCount;
-    new->income = 100;
+    new->income = 100; // Base income is $100 for all settlements
     new->next = NULL;
 
     return new;  
