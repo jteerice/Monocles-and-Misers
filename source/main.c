@@ -14,6 +14,7 @@ void initUnionFind(int UF[], int max);
 // HEADER
 void buildRoad(int UF[], settlement *head);
 bool getName(settlement *head, char *settlementName);
+void connect(int UF[], settlement *head, char *settlement1, char *settlement2);
 
 int main () {
 
@@ -137,5 +138,9 @@ bool getName(settlement *head, char *settlementName) {
         tmp = tmp->next;
     }
     return false;
+}
+
+void connect(int UF[], settlement *head, char *settlement1, char *settlement2) {
+
 }
 
