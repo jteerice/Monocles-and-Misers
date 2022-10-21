@@ -15,6 +15,8 @@ void initUnionFind(int UF[], int max);
 void buildRoad(int UF[], settlement *head);
 bool getName(settlement *head, char *settlementName);
 void connect(int UF[], settlement *head, char *settlement1, char *settlement2);
+int find(char *settlementName, settlement *head);
+int findRoot(int UF[], int id);
 
 int main () {
 
@@ -59,6 +61,7 @@ int main () {
                     break;
                 case 2:
                     head = createSettlement(head, &settlementCount);
+                    settlementCount++;
                     break;
                 case 3:
                     buildRoad(UF, head);
@@ -142,5 +145,31 @@ bool getName(settlement *head, char *settlementName) {
 
 void connect(int UF[], settlement *head, char *settlement1, char *settlement2) {
 
+    int id1 = find(settlement1, head);
+    int id2 = find(settlement2, head);
+    int root1 = findRoot(UF, id1);
+    int root2 = findRoot(UF, id2);
+
+}
+
+int find(char *settlementName, settlement *head) {
+
+    settlement *tmp = head;
+    while (tmp != NULL) {
+        if (strcmp(tmp->name, settlementName)) return tmp->id;
+        tmp = tmp->next;
+    }
+    return -1;
+}
+
+int findRoot(int UF[], int id) {
+
+    int i = id;
+
+    while (UF[i] != i) {
+        i = UF[i];
+    }
+
+    return i;
 }
 

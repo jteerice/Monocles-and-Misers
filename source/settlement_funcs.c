@@ -10,7 +10,6 @@ settlement *createSettlement(settlement *head, int *settlementCount) {
         return head;
     }
     head = addToBack(head, initSettlement(*settlementCount));
-    settlementCount++;
     
     return head;
 }
@@ -50,7 +49,7 @@ settlement *initSettlement(int settlementCount) {
 void printSettlements(settlement *head) {
     printf("\n");
     while (head != NULL) {
-        printf("%s\n", head->name);
+        printf("%s %d\n", head->name, head->id);
         head = head->next;
     }
 }
