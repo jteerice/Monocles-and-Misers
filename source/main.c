@@ -11,10 +11,10 @@ int main () {
     settlement *head = NULL;
     int settlementCount = 0; // This will be used to assign an ID to each node, and subsequently be used in the Union-Find datastructure for linking.
     int *UF = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS);
-    //int *size = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS); // To keep track of tree sizing
+    int *size = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS); // To keep track of tree sizing
 
     initUnionFind(UF, MAX_SETTLEMENTS); // Initialize Union-Find data structure with the the the index as the dereferenced value
-    //initUnionFind(size, MAX_SETTLEMENTS);
+    initUnionFind(size, MAX_SETTLEMENTS);
 
     printf("+-------------------------------Welcome to Monocles and Misers!---------------------------------+\n");
     printf("|                                                                                               |\n");
@@ -53,7 +53,7 @@ int main () {
                     settlementCount++;
                     break;
                 case 3:
-                    buildRoad(UF, head);
+                    buildRoad(size, UF, head);
                     break;
                 case 4:
                     //developSettlement();

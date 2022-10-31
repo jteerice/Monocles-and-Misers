@@ -35,6 +35,9 @@ settlement *initSettlement(int settlementCount) {
     printf("Please enter a name for your settlement (20 or less characters): ");
     fgets(nameBuff, MAX_NAME_SIZE, stdin);
     nameBuff[strcspn(nameBuff, "\n")] = '\0';
+    if (strcmp(nameBuff, "") == 0) {
+        strncpy(nameBuff, "UnnamedSettlement\0", MAX_NAME_SIZE);
+    }
 
     settlement *new = (settlement*)malloc(sizeof(settlement));
     strncpy(new->name, nameBuff, MAX_NAME_SIZE);
@@ -55,7 +58,7 @@ void printSettlements(settlement *head) {
 
 /* Union Find functions */
 
-void buildRoad(int UF[], settlement *head) {
+void buildRoad(int size[], int UF[], settlement *head) {
 
     char *settlement1 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
     char *settlement2 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
@@ -75,7 +78,7 @@ void buildRoad(int UF[], settlement *head) {
         set1 = getName(head, settlement2);
     }
 
-    connect(UF, head, settlement1, settlement2);
+    connect(size, UF, head, settlement1, settlement2);
     printf("%s and %s have been connected with a road!\n", settlement1, settlement2);
 }
 
@@ -92,13 +95,13 @@ bool getName(settlement *head, char *settlementName) {
     return false;
 }
 
-void connect(int UF[], settlement *head, char *settlement1, char *settlement2) {
+void connect(int size[], int UF[], settlement *head, char *settlement1, char *settlement2) {
 
     int id1 = find(settlement1, head);
     int id2 = find(settlement2, head);
     int root1 = findRoot(UF, id1);
     int root2 = findRoot(UF, id2);
-    Union(UF, root1, root2);
+    Union(size, UF, root1, root2);
 
 }
 
@@ -115,15 +118,26 @@ int find(char *settlementName, settlement *head) {
 int findRoot(int UF[], int id) {
 
     int i = id;
+    int j;
+    int k;
 
     while (UF[i] != i) {
         i = UF[i];
     }
+    j = i;
+    
+    // Path compression loop
+    i = id;
+    while (UF[i] != i) {
+        k = UF[i];
+        UF[i] = j;
+        i = k;
+    }
 
-    return i;
+    return j;
 }
 
-void Union(int UF[], int id1, int id2) {
+void Union(int size[], int UF[], int id1, int id2) {
 
     int i = findRoot(UF, id1);
     int j = findRoot(UF, id2);
@@ -131,7 +145,12 @@ void Union(int UF[], int id1, int id2) {
     if (i == j) {
         printf("Already connected!\n");
     }
-    else {
+    else if (size[i] < size[j]) {
         UF[i] = j;
+        size[j] += size[i];
+    }
+    else {
+        UF[j] = i;
+        size[i] += size[j];
     }
 }

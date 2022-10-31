@@ -23,11 +23,11 @@ void printSettlements(settlement *head);
 settlement *addToBack(settlement *head, settlement *new);
 settlement *initSettlement(int settlementCount);
 
-void buildRoad(int UF[], settlement *head);
+void buildRoad(int size [], int UF[], settlement *head);
 bool getName(settlement *head, char *settlementName);
-void connect(int UF[], settlement *head, char *settlement1, char *settlement2);
+void connect(int size[], int UF[], settlement *head, char *settlement1, char *settlement2);
 int find(char *settlementName, settlement *head);
 int findRoot(int UF[], int id);
-void Union(int UF[], int id1, int id2);
+void Union(int size[], int UF[], int id1, int id2);
 
 #endif
