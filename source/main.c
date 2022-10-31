@@ -1,22 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "settlement_funcs.h"
-// HEADER
-#include <stdbool.h>
-#include <string.h>
-
-#define MAX_SETTLEMENTS 20
+#include "../header/settlement_funcs.h"
 
 // Function prototypes
 int getChoice();
 void clear();
 void initUnionFind(int UF[], int max);
-// HEADER
-void buildRoad(int UF[], settlement *head);
-bool getName(settlement *head, char *settlementName);
-void connect(int UF[], settlement *head, char *settlement1, char *settlement2);
-int find(char *settlementName, settlement *head);
-int findRoot(int UF[], int id);
 
 int main () {
 
@@ -24,8 +11,10 @@ int main () {
     settlement *head = NULL;
     int settlementCount = 0; // This will be used to assign an ID to each node, and subsequently be used in the Union-Find datastructure for linking.
     int *UF = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS);
+    //int *size = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS); // To keep track of tree sizing
 
     initUnionFind(UF, MAX_SETTLEMENTS); // Initialize Union-Find data structure with the the the index as the dereferenced value
+    //initUnionFind(size, MAX_SETTLEMENTS);
 
     printf("+-------------------------------Welcome to Monocles and Misers!---------------------------------+\n");
     printf("|                                                                                               |\n");
@@ -108,68 +97,5 @@ void clear() {
     while (getchar() != '\n');
 }
 
-void buildRoad(int UF[], settlement *head) {
 
-    char *settlement1 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
-    char *settlement2 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
-    bool set1 = true;
-    bool set2 = true;
-
-    printf("Please enter the first settlement you would like to connect: ");
-    set1 = getName(head, settlement1);
-    while (set1 == false) {
-        printf("That settlement doesn't exist! Please enter a valid settlement: ");
-        set1 = getName(head, settlement1);
-    }
-    printf("Please enter the second settlement you would like to connect: ");
-    set2 = getName(head, settlement2);
-    while (settlement2 == false) {
-        printf("That settlement doesn't exist! Please enter a valid settlement: ");
-        set1 = getName(head, settlement2);
-    }
-
-}
-
-bool getName(settlement *head, char *settlementName) {
-
-    fgets(settlementName, MAX_NAME_SIZE, stdin);
-    settlementName[strcspn(settlementName, "\n")] = '\0';
-
-    settlement *tmp = head;
-    while (tmp != NULL) {
-        if (strcmp(tmp->name, settlementName) == 0) return true;
-        tmp = tmp->next;
-    }
-    return false;
-}
-
-void connect(int UF[], settlement *head, char *settlement1, char *settlement2) {
-
-    int id1 = find(settlement1, head);
-    int id2 = find(settlement2, head);
-    int root1 = findRoot(UF, id1);
-    int root2 = findRoot(UF, id2);
-
-}
-
-int find(char *settlementName, settlement *head) {
-
-    settlement *tmp = head;
-    while (tmp != NULL) {
-        if (strcmp(tmp->name, settlementName)) return tmp->id;
-        tmp = tmp->next;
-    }
-    return -1;
-}
-
-int findRoot(int UF[], int id) {
-
-    int i = id;
-
-    while (UF[i] != i) {
-        i = UF[i];
-    }
-
-    return i;
-}
 
