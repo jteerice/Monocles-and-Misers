@@ -16,6 +16,7 @@ void connect(int size[], int UF[], settlement *head, char *settlement1, char *se
 int find(char *settlementName, settlement *head);
 int findRoot(int UF[], int id);
 void Union(int size[], int UF[], int id1, int id2);
+void printConnectedSettlements(int UF[], settlement* head);
 
 #endif
 

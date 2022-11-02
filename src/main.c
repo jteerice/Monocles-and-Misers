@@ -36,12 +36,13 @@ int main () {
     while (1) {
         printf("\n+-----------What would you like to do?----------+\n");
         printf("|                                               |\n");
-        printf("| 1) Retrive a list of settlements              |\n");
+        printf("| 1) Retrieve a list of settlements             |\n");
         printf("| 2) Create a new settlement (Max 20)           |\n");
         printf("| 3) Build a road between two settlements       |\n");
-        printf("| 4) Develop settlement                         |\n");
-        printf("| 5) Retrieve current income from settlements   |\n");
-        printf("| 6) Quit                                       |\n");
+        printf("| 4) Find out if two settlements are connected  |\n");
+        printf("| 5) Develop settlement                         |\n");
+        printf("| 6) Retrieve current income from settlements   |\n");
+        printf("| 7) Quit                                       |\n");
         printf("+-----------------------------------------------+\n");
 
             printf("\nPlease enter a choice between 1 and 6: ");
@@ -57,12 +58,15 @@ int main () {
                     buildRoad(size, UF, head);
                     break;
                 case 4:
-                    //developSettlement();
+                    printConnectedSettlements(UF, head);
                     break;
                 case 5:
-                    //retrieveIncome();
+                    //developSettlement();
                     break;
                 case 6:
+                    //retrieveIncome();
+                    break;
+                case 7:
                     printf("Thank you for playing..\n");
                     printf("Goodbye!\n");
                     exit(1);
