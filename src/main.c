@@ -77,6 +77,13 @@ int main () {
             }
     }
     
+    while (head != NULL) {
+        settlement* tmp = head;
+        head = head->next;
+        free(tmp);
+    }
+    free(size);
+    free(UF);
     return 0;
 }
 

@@ -133,4 +133,7 @@ void printConnectedSettlements(int UF[], settlement* head) {
 
     if (i == j) printf("%s and %s are connected.\n", settlementName1, settlementName2);
     else printf("%s and %s are not connected.\n", settlementName1, settlementName2); 
+
+    free(settlementName1);
+    free(settlementName2);
 }
