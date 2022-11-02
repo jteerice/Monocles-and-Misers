@@ -1,5 +1,7 @@
 #include "../header/union_find.h"
 
+/* Union-Find Functions */
+
 void buildRoad(int size[], int UF[], settlement *head) {
 
     char *settlement1 = (char*)malloc(sizeof(char) * MAX_NAME_SIZE);
