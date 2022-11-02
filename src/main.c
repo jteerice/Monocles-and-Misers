@@ -1,10 +1,12 @@
 #include "../header/settlement_funcs.h"
 #include "../header/union_find.h"
+#include "../header/developments_hash_funcs.h"
 
 // Function prototypes
 int getChoice();
 void clear();
 void initUnionFind(int UF[], int max);
+void initHashTable(development* hashTable);
 
 int main () {
 
@@ -13,9 +15,11 @@ int main () {
     int settlementCount = 0; // This will be used to assign an ID to each node, and subsequently be used in the Union-Find datastructure for linking.
     int *UF = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS);
     int *size = (int*)malloc(sizeof(int) * MAX_SETTLEMENTS); // To keep track of tree sizing
+    development* hashTable = (development*)malloc(sizeof(development) * TABLE_SIZE);
 
     initUnionFind(UF, MAX_SETTLEMENTS); // Initialize Union-Find data structure with the the the index as the dereferenced value
     initUnionFind(size, MAX_SETTLEMENTS);
+    initHashTable(hashTable);
 
     printf("+-------------------------------Welcome to Monocles and Misers!---------------------------------+\n");
     printf("|                                                                                               |\n");
@@ -40,9 +44,10 @@ int main () {
         printf("| 2) Create a new settlement (Max 20)           |\n");
         printf("| 3) Build a road between two settlements       |\n");
         printf("| 4) Find out if two settlements are connected  |\n");
-        printf("| 5) Develop settlement                         |\n");
-        printf("| 6) Retrieve current income from settlements   |\n");
-        printf("| 7) Quit                                       |\n");
+        printf("| 5) Create new development                     |\n");
+        printf("| 6) Develop settlement                         |\n");
+        printf("| 7) Retrieve current income from settlements   |\n");
+        printf("| 8) Quit                                       |\n");
         printf("+-----------------------------------------------+\n");
 
             printf("\nPlease enter a choice between 1 and 6: ");
@@ -61,12 +66,15 @@ int main () {
                     printConnectedSettlements(UF, head);
                     break;
                 case 5:
-                    //developSettlement();
+                    createDevelopment(hashTable);
                     break;
                 case 6:
-                    //retrieveIncome();
+                    //developSettlement();
                     break;
                 case 7:
+                    //retrieveIncome();
+                    break;
+                case 8:
                     printf("Thank you for playing..\n");
                     printf("Goodbye!\n");
                     exit(1);
@@ -102,6 +110,13 @@ void initUnionFind(int UF[], int max) {
 
     for (int i = 0; i < max; i++) {
         UF[i] = i;
+    }
+}
+
+void initHashTable(development* hashTable) {
+
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hashTable[i] = NULL;
     }
 }
 
